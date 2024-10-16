@@ -5,7 +5,7 @@ body {
     align-items: center;
     height: 100vh;
     background-color: black;
-    background-image: url('/Users/dev/cipher_encryption/pic.jpg');
+    background-image: url('pic.jpg');
     background-size: cover;
     color: white;
 }
