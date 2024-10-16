@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cipher Encryption/Decryption</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Cipher Encryption/Decryption</h1>
+
+        <textarea id="inputText" placeholder="Enter your text here..."></textarea>
+
+        <select id="cipherType">
+            <option value="caesar">Caesar</option>
+            <option value="vigenere">Vigenère</option>
+        </select>
+
+        <input type="text" id="keyInput" placeholder="Enter key (or shift for Caesar)">
+        <button id="encryptBtn">Encrypt</button>
+        <button id="decryptBtn">Decrypt</button>
+
+        <h2>Output:</h2>
+        <p id="outputText"></p>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>

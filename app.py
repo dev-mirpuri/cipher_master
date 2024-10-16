@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder='static')
 
 # Caesar Cipher Class
 class CaesarCipher:
@@ -13,7 +13,6 @@ class CaesarCipher:
 
     def decrypt(self, text):
         return ''.join([self.alphabet[(self.alphabet.index(c) - self.shift) % 26] if c in self.alphabet else c for c in text.lower()])
-
 
 # Vigenere Cipher Class
 class VigenereCipher:
@@ -74,6 +73,11 @@ def decrypt():
         return jsonify({"error": "Unsupported cipher type"}), 400
 
     return jsonify({"decrypted_text": decrypted_text})
+
+# Serve static HTML files
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
