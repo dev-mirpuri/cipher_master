@@ -6,6 +6,15 @@ document.getElementById('decryptBtn').addEventListener('click', function() {
     processText('decrypt');
 });
 
+document.getElementById('copyBtn').addEventListener('click', function() {
+    const outputText = document.getElementById('outputText').textContent;
+    navigator.clipboard.writeText(outputText).then(() => {
+        alert('Copied to clipboard!');
+    }).catch(err => {
+        console.error('Error copying text: ', err);
+    });
+});
+
 function processText(action) {
     const text = document.getElementById('inputText').value;
     const cipherType = document.getElementById('cipherType').value;

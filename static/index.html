@@ -3,26 +3,36 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Cipher Encryption/Decryption</title>
+    <title>Text Encrypter and Decrypter</title>
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div class="container">
-        <h1>Cipher Encryption/Decryption</h1>
+        <h1>Text Encrypter and Decrypter</h1>
 
+        <!-- Input text -->
         <textarea id="inputText" placeholder="Enter your text here..."></textarea>
 
+        <!-- Cipher Selection -->
+        <label for="cipherType">Choose Cipher:</label>
         <select id="cipherType">
-            <option value="caesar">Caesar</option>
-            <option value="vigenere">Vigenère</option>
+            <option value="caesar">Caesar Cipher</option>
+            <option value="vigenere">Vigenère Cipher</option>
         </select>
 
+        <!-- Key Input -->
         <input type="text" id="keyInput" placeholder="Enter key (or shift for Caesar)">
-        <button id="encryptBtn">Encrypt</button>
-        <button id="decryptBtn">Decrypt</button>
 
+        <!-- Encrypt/Decrypt buttons -->
+        <div class="button-group">
+            <button id="encryptBtn">Encrypt</button>
+            <button id="decryptBtn">Decrypt</button>
+        </div>
+
+        <!-- Output Section -->
         <h2>Output:</h2>
         <p id="outputText"></p>
+        <button id="copyBtn">Copy to Clipboard</button>
     </div>
 
     <script src="app.js"></script>
