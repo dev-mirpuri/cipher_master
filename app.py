@@ -2,16 +2,17 @@ from flask import Flask, request, jsonify, send_from_directory
 
 app = Flask(__name__, static_folder='static')
 
-# Serve static HTML files from the "static" folder
+# Serve static HTML file
 @app.route('/')
 def index():
     return app.send_static_file('index.html')
 
-# To serve other static files like CSS and JS
+# Serve static files (CSS, JS, etc.)
 @app.route('/<path:filename>')
 def static_files(filename):
     return send_from_directory(app.static_folder, filename)
-# Caesar Cipher Class
+
+# Encryption and decryption routes
 class CaesarCipher:
     def __init__(self, shift):
         self.shift = shift
@@ -23,7 +24,6 @@ class CaesarCipher:
     def decrypt(self, text):
         return ''.join([self.alphabet[(self.alphabet.index(c) - self.shift) % 26] if c in self.alphabet else c for c in text.lower()])
 
-# Vigenere Cipher Class
 class VigenereCipher:
     def __init__(self, key):
         self.key = key.lower()
@@ -50,7 +50,7 @@ def encrypt():
     cipher_type = data.get('cipher')
     text = data.get('text')
     key = data.get('key', None)
-    
+
     if cipher_type == 'caesar':
         shift = int(key)
         cipher = CaesarCipher(shift)
@@ -63,6 +63,7 @@ def encrypt():
 
     return jsonify({"encrypted_text": encrypted_text})
 
+
 # Route for decrypting text
 @app.route('/decrypt', methods=['POST'])
 def decrypt():
@@ -70,7 +71,7 @@ def decrypt():
     cipher_type = data.get('cipher')
     text = data.get('text')
     key = data.get('key', None)
-    
+
     if cipher_type == 'caesar':
         shift = int(key)
         cipher = CaesarCipher(shift)
@@ -83,10 +84,6 @@ def decrypt():
 
     return jsonify({"decrypted_text": decrypted_text})
 
-# Serve static HTML files
-@app.route('/')
-def index():
-    return app.send_static_file('index.html')
 
 if __name__ == '__main__':
     app.run(debug=True)
