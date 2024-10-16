@@ -1,7 +1,16 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 
 app = Flask(__name__, static_folder='static')
 
+# Serve static HTML files from the "static" folder
+@app.route('/')
+def index():
+    return app.send_static_file('index.html')
+
+# To serve other static files like CSS and JS
+@app.route('/<path:filename>')
+def static_files(filename):
+    return send_from_directory(app.static_folder, filename)
 # Caesar Cipher Class
 class CaesarCipher:
     def __init__(self, shift):
