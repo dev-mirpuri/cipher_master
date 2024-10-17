@@ -6,72 +6,91 @@ document.addEventListener('DOMContentLoaded', () => {
     const decryptBtn = document.getElementById('decryptBtn');
     const outputText = document.getElementById('outputText');
     const copyBtn = document.getElementById('copyBtn');
+    const notification = document.getElementById('notification');
 
-    function showNotification(message, type = 'info') {
-        const notification = document.createElement('div');
+    function showNotification(message) {
         notification.textContent = message;
-        notification.className = `fixed top-4 right-4 p-4 rounded text-white ${type === 'error' ? 'bg-red-500' : 'bg-green-500'}`;
-        document.body.appendChild(notification);
-        setTimeout(() => notification.remove(), 3000);
+        notification.classList.add('show');
+        setTimeout(() => {
+            notification.classList.remove('show');
+        }, 3000);
     }
 
-    function processText(action) {
-        const text = inputText.value.trim();
-        const cipher = cipherType.value;
-        const key = keyInput.value.trim();
-
-        if (!text) {
-            showNotification('Please enter some text to process.', 'error');
-            return;
+    function validateInput() {
+        if (!inputText.value.trim()) {
+            showNotification('Please enter some text to encrypt/decrypt.');
+            return false;
         }
-
-        if (cipher !== 'fernet' && !key) {
-            showNotification('Please enter a key.', 'error');
-            return;
+        if (!keyInput.value.trim()) {
+            showNotification('Please enter a key or shift value.');
+            return false;
         }
+        if (cipherType.value === 'caesar' && isNaN(keyInput.value)) {
+            showNotification('Please enter a numeric shift value for Caesar cipher.');
+            return false;
+        }
+        return true;
+    }
 
-        const data = { cipher, text, key };
+    async function processText(action) {
+        if (!validateInput()) return;
 
-        fetch(`/${action}`, {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(data),
-        })
-        .then(response => response.json())
-        .then(data => {
-            if (data.error) {
-                showNotification(data.error, 'error');
-            } else {
-                outputText.textContent = data[`${action}ed_text`];
-                showNotification(`Text ${action}ed successfully!`);
+        const data = {
+            cipher: cipherType.value,
+            text: inputText.value,
+            key: keyInput.value
+        };
+
+        try {
+            const response = await fetch(`/${action}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(data),
+            });
+
+            if (!response.ok) {
+                throw new Error('Network response was not ok');
             }
-        })
-        .catch(error => {
+
+            const result = await response.json();
+            outputText.textContent = action === 'encrypt' ? result.encrypted_text : result.decrypted_text;
+            showNotification(`Text ${action}ed successfully!`);
+        } catch (error) {
             console.error('Error:', error);
-            showNotification('An error occurred. Please try again.', 'error');
-        });
+            showNotification('An error occurred. Please try again.');
+        }
     }
 
     encryptBtn.addEventListener('click', () => processText('encrypt'));
     decryptBtn.addEventListener('click', () => processText('decrypt'));
 
     copyBtn.addEventListener('click', () => {
-        const textToCopy = outputText.textContent;
-        if (textToCopy) {
-            navigator.clipboard.writeText(textToCopy)
-                .then(() => showNotification('Copied to clipboard!'))
-                .catch(err => {
-                    console.error('Error copying text: ', err);
-                    showNotification('Failed to copy text.', 'error');
-                });
-        } else {
-            showNotification('No text to copy.', 'error');
+        if (!outputText.textContent) {
+            showNotification('No text to copy!');
+            return;
         }
+        navigator.clipboard.writeText(outputText.textContent)
+            .then(() => showNotification('Copied to clipboard!'))
+            .catch(err => {
+                console.error('Error copying text: ', err);
+                showNotification('Failed to copy text. Please try again.');
+            });
     });
 
+    // Add animation to the input text area
+    inputText.addEventListener('focus', () => {
+        inputText.style.boxShadow = '0 0 10px rgba(74, 144, 226, 0.5)';
+    });
+
+    inputText.addEventListener('blur', () => {
+        inputText.style.boxShadow = 'none';
+    });
+
+    // Dynamic key input label
     cipherType.addEventListener('change', () => {
-        const isFernet = cipherType.value === 'fernet';
-        keyInput.placeholder = isFernet ? 'No key required for Fernet' : 'Enter key (or shift for Caesar)';
-        keyInput.disabled = isFernet;
+        const label = document.querySelector('label[for="keyInput"]');
+        label.textContent = cipherType.value === 'caesar' ? 'Shift Value:' : 'Encryption Key:';
     });
 });
