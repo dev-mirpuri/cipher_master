@@ -5,7 +5,7 @@ body {
     align-items: center;
     height: 100vh;
     background-color: black;
-    background-image: url('pic.jpg'); /* Assuming background image is placed in static folder */
+    background-image: url('pic.jpg'); 
     background-size: cover;
     color: white;
 }
@@ -16,29 +16,29 @@ body {
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(255, 255, 255, 0.1);
     text-align: center;
-    width: 600px; /* Increased width */
+    width: 600px; 
 }
 
 h1 {
-    font-size: 28px; /* Slightly larger title */
+    font-size: 28px; 
     margin-bottom: 20px;
 }
 
 textarea {
-    width: 580px; /* Increased width to match the container */
+    width: 580px;
     height: auto;
-    max-height: 300px; /* Optional: Set a max height */
+    max-height: 300px;
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 4px;
     background: #333;
     color: white;
-    resize: none; /* Disable resizing from the corner */
-    overflow-y: auto; /* Enable vertical scrolling if content exceeds height */
+    resize: none; 
+    overflow-y: auto; 
 }
 
 select, input, button {
-    width: 580px; /* Increased width matching textarea */
+    width: 580px;
     margin: 10px 0;
     padding: 10px;
     border-radius: 4px;
