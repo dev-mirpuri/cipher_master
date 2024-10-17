@@ -1,6 +1,10 @@
 from flask import Flask, request, jsonify, send_from_directory
+import logging
 
 app = Flask(__name__, static_folder='static')
+
+# Configure logging
+logging.basicConfig(level=logging.INFO)
 
 # Serve static HTML file
 @app.route('/')
@@ -51,11 +55,18 @@ def encrypt():
     text = data.get('text')
     key = data.get('key', None)
 
+    logging.info(f"Encryption request: {data}")
+
     if cipher_type == 'caesar':
-        shift = int(key)
+        try:
+            shift = int(key)
+        except ValueError:
+            return jsonify({"error": "Key for Caesar cipher must be a number"}), 400
         cipher = CaesarCipher(shift)
         encrypted_text = cipher.encrypt(text)
     elif cipher_type == 'vigenere':
+        if not key.isalpha():
+            return jsonify({"error": "Key for Vigenère cipher must contain only letters"}), 400
         cipher = VigenereCipher(key)
         encrypted_text = cipher.encrypt(text)
     else:
@@ -72,11 +83,18 @@ def decrypt():
     text = data.get('text')
     key = data.get('key', None)
 
+    logging.info(f"Decryption request: {data}")
+
     if cipher_type == 'caesar':
-        shift = int(key)
+        try:
+            shift = int(key)
+        except ValueError:
+            return jsonify({"error": "Key for Caesar cipher must be a number"}), 400
         cipher = CaesarCipher(shift)
         decrypted_text = cipher.decrypt(text)
     elif cipher_type == 'vigenere':
+        if not key.isalpha():
+            return jsonify({"error": "Key for Vigenère cipher must contain only letters"}), 400
         cipher = VigenereCipher(key)
         decrypted_text = cipher.decrypt(text)
     else:
