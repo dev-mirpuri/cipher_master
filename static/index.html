@@ -3,36 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Text Encrypter and Decrypter</title>
+    <title>Advanced Text Encrypter and Decrypter</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/tailwindcss/2.2.19/tailwind.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
-<body>
-    <div class="container">
-        <h1>Text Encrypter and Decrypter</h1>
+<body class="bg-gray-100 min-h-screen flex items-center justify-center">
+    <div class="container mx-auto p-8 bg-white shadow-lg rounded-lg">
+        <h1 class="text-3xl font-bold mb-6 text-center text-gray-800">Advanced Text Encrypter and Decrypter</h1>
 
-        <!-- Input text -->
-        <textarea id="inputText" placeholder="Enter your text here..."></textarea>
-
-        <!-- Cipher Selection -->
-        <label for="cipherType">Choose Cipher:</label>
-        <select id="cipherType">
-            <option value="caesar">Caesar Cipher</option>
-            <option value="vigenere">Vigenère Cipher</option>
-        </select>
-
-        <!-- Key Input -->
-        <input type="text" id="keyInput" placeholder="Enter key (or shift for Caesar)">
-
-        <!-- Encrypt/Decrypt buttons -->
-        <div class="button-group">
-            <button id="encryptBtn">Encrypt</button>
-            <button id="decryptBtn">Decrypt</button>
+        <div class="mb-4">
+            <label for="inputText" class="block mb-2 font-semibold text-gray-700">Input Text:</label>
+            <textarea id="inputText" class="w-full p-2 border rounded" rows="4" placeholder="Enter your text here..."></textarea>
         </div>
 
-        <!-- Output Section -->
-        <h2>Output:</h2>
-        <p id="outputText"></p>
-        <button id="copyBtn">Copy to Clipboard</button>
+        <div class="flex mb-4">
+            <div class="w-1/2 pr-2">
+                <label for="cipherType" class="block mb-2 font-semibold text-gray-700">Choose Cipher:</label>
+                <select id="cipherType" class="w-full p-2 border rounded">
+                    <option value="caesar">Caesar Cipher</option>
+                    <option value="vigenere">Vigenère Cipher</option>
+                    <option value="fernet">Fernet (Modern Encryption)</option>
+                </select>
+            </div>
+            <div class="w-1/2 pl-2">
+                <label for="keyInput" class="block mb-2 font-semibold text-gray-700">Key:</label>
+                <input type="text" id="keyInput" class="w-full p-2 border rounded" placeholder="Enter key (or shift for Caesar)">
+            </div>
+        </div>
+
+        <div class="flex space-x-4 mb-6">
+            <button id="encryptBtn" class="flex-1 bg-blue-500 text-white p-2 rounded hover:bg-blue-600 transition duration-200">Encrypt</button>
+            <button id="decryptBtn" class="flex-1 bg-green-500 text-white p-2 rounded hover:bg-green-600 transition duration-200">Decrypt</button>
+        </div>
+
+        <div class="mb-4">
+            <h2 class="text-xl font-semibold mb-2 text-gray-800">Output:</h2>
+            <p id="outputText" class="p-4 bg-gray-200 rounded min-h-[100px]"></p>
+        </div>
+
+        <button id="copyBtn" class="w-full bg-gray-500 text-white p-2 rounded hover:bg-gray-600 transition duration-200">Copy to Clipboard</button>
     </div>
 
     <script src="app.js"></script>
